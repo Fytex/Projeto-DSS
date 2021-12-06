@@ -29,6 +29,15 @@ public class PassoReparacao {
         this.substeps = new ArrayList<>(substepNumber);
     }
 
+    public PassoReparacao(String descricao, List<SubPassoReparacao> substeps){
+        this.descricao = descricao;
+        this.timePrevison = substeps.stream().map(SubPassoReparacao::getDuration).reduce(0,Integer::sum);
+        this.costPrevision = substeps.stream().map(SubPassoReparacao::getCost).reduce((float) 0 , Float::sum);
+        this.substeps = substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
+        this.timeUsed = 0;
+        this.realCost = 0;
+    }
+
     public PassoReparacao(PassoReparacao p) {
         this.descricao = p.getDescricao();
         this.timePrevison = p.getTimePrevison();
@@ -36,6 +45,7 @@ public class PassoReparacao {
         this.substeps = p.getSubsteps();
         this.timeUsed = p.getTimeUsed();
         this.realCost = p.getRealCost();
+        this.substeps = p.getSubsteps();
     }
 
     public int getTimeUsed() {
@@ -62,7 +72,11 @@ public class PassoReparacao {
     }
 
     private List<SubPassoReparacao> getSubsteps() {
-        return this.substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
+        if(this.substeps != null)
+            return this.substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
+        else
+            return null;
+
     }
 
     public String getDescricao() {

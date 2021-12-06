@@ -1,8 +1,10 @@
 package Business.GEstabelecimento;
 
+import Business.IGEstabelecimento;
+
 import java.util.*;
 
-public class GEstabelecimentoFacade {
+public class GEstabelecimentoFacade implements IGEstabelecimento {
     private Map<String, Utilizador> accounts;
     private Map<String, Cliente> clients;
     private List<Equipamento> equipments;
@@ -16,6 +18,13 @@ public class GEstabelecimentoFacade {
 
     public GEstabelecimentoFacade() {
         this.accounts = new HashMap<>();
+        this.accounts.put("Joaquim",new Tecnico("Joaquim","Joaquim"));
+        this.accounts.put("A",new Funcionario("A","A"));
+        this.clients = new HashMap<>();
+        this.equipments = new ArrayList<>();
+        this.budgetsRequests = new ArrayList<>();
+        this.budgetsArchived = new ArrayList<>();
+        this.pendingRepairs = new ArrayList<>();
     }
 
 
@@ -123,12 +132,12 @@ public class GEstabelecimentoFacade {
         return budget.getEquipmentInfo();
     }
 
-    public PassoReparacao createStep(String description, int timePrevision, int costPrevision) {
+    public PassoReparacao createStep(String description, int timePrevision, float costPrevision) {
         return new PassoReparacao(timePrevision, costPrevision, description);
     }
 
-    public PassoReparacao createStepWithSub(int subStepNumber) {
-        return new PassoReparacao(subStepNumber);
+    public PassoReparacao createStepWithSub(String description, List<SubPassoReparacao> subs) {
+        return new PassoReparacao(description,subs);
     }
 
     public SubPassoReparacao createSubStep(int duration, float cost){
@@ -141,7 +150,6 @@ public class GEstabelecimentoFacade {
         budget.setEstado(EstadoOrcamento.DONE);
         budget.setTimePrevision(workPlan.getTotalHoursPrevision());
         budget.setTotalCostPrevision(workPlan.getTotalCostPrevision());
-
         this.pendingRepairs.add(new Reparacao(budget,workPlan));
     }
 
