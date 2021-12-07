@@ -13,7 +13,9 @@ public class Orcamento {
     public Orcamento(Equipamento eq) {
         this.equipamento = eq;
         this.estado = EstadoOrcamento.NOTDONE;
-
+        this.totalCostPrevision = 0;
+        this.timePrevision = 0;
+        this.created = LocalDateTime.now();
     }
 
     public Orcamento(Orcamento o){

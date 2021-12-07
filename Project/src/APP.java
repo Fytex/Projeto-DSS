@@ -1,6 +1,6 @@
 import Business.GEstabelecimento.GEstabelecimentoFacade;
 import Business.IGEstabelecimento;
-import controllers.UI;
+import UI.UI;
 
 public class APP {
     public static void main(String[] args){

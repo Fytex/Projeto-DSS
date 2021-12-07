@@ -2,6 +2,7 @@ package Business.GEstabelecimento;
 
 import Business.IGEstabelecimento;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class GEstabelecimentoFacade implements IGEstabelecimento {
@@ -80,6 +81,10 @@ public class GEstabelecimentoFacade implements IGEstabelecimento {
         return equipment;
     }
 
+    public boolean hasClient(String nif) {
+        return clients.containsKey(nif);
+    }
+
     private Cliente getClient(String nif) throws ClienteNaoExisteException {
         Cliente client = clients.get(nif);
 
@@ -88,8 +93,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento {
         return client;
     }
 
-    public void askBudget(String nif, String info) throws ClienteNaoExisteException {
-        Cliente client = getClient(nif);
+    public void askBudget(String nif, String info) {
 
         Equipamento equipment = registerEquipment(nif, info);
 
@@ -124,7 +128,8 @@ public class GEstabelecimentoFacade implements IGEstabelecimento {
 
     public String getFirstBudgetRequest() {
         Orcamento budget = this.budgetsRequests.get(0);
-        while (budget.getTimeCreated().isBefore(budget.getTimeOfExpiricy())) {
+        LocalDateTime now = LocalDateTime.now();
+        while (now.isAfter(budget.getTimeOfExpiricy())) {
             this.budgetsRequests.remove(0);
             this.budgetsArchived.add(budget);
             budget = this.budgetsRequests.get(0);
