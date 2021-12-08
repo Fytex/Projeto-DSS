@@ -19,7 +19,7 @@ public class Orcamento {
     }
 
     public Orcamento(Orcamento o){
-        this.equipamento = o.getEquipamento();
+        this.equipamento = o.getEquipment();
         this.estado = o.getEstado();
         this.totalCostPrevision = o.getTimePrevision();
         this.timePrevision = o.getTimePrevision();
@@ -30,7 +30,7 @@ public class Orcamento {
         return this.equipamento.getInfo();
     }
 
-    public Equipamento getEquipamento() {
+    public Equipamento getEquipment() {
         return this.equipamento.clone();
     }
 

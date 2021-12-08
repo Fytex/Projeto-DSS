@@ -161,7 +161,10 @@ public class UI {
         System.out.println("O dispositivo mais urgente na lista de orçamentos apresenta o seguinte problema : " + equipProblem);
 
         System.out.println("Total de passos esperado : ");
-        int totalSteps = readOption();
+        int totalSteps;
+        while((totalSteps = Integer.parseInt(sc.nextLine())) < 1){
+            System.out.println("Introduza um número maior que zero !");
+        }
 
         List<PassoReparacao> list = new ArrayList<>();
 
