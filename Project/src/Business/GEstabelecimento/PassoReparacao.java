@@ -1,10 +1,11 @@
 package Business.GEstabelecimento;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PassoReparacao {
+public class PassoReparacao implements Serializable {
     private String descricao;
     private int timePrevison;
     private float costPrevision;
@@ -21,16 +22,8 @@ public class PassoReparacao {
         this.substeps = null;
     }
 
-    public PassoReparacao(int substepNumber) {
-        this.timePrevison = 0;
-        this.costPrevision = 0;
-        this.timeUsed = 0;
-        this.realCost = 0;
-        this.substeps = new ArrayList<>(substepNumber);
-    }
-
-    public PassoReparacao(String descricao, List<SubPassoReparacao> substeps){
-        this.descricao = descricao;
+    public PassoReparacao(String description, List<SubPassoReparacao> substeps){
+        this.descricao = description;
         this.timePrevison = substeps.stream().map(SubPassoReparacao::getDuration).reduce(0,Integer::sum);
         this.costPrevision = substeps.stream().map(SubPassoReparacao::getCost).reduce((float) 0 , Float::sum);
         this.substeps = substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
@@ -64,13 +57,6 @@ public class PassoReparacao {
         this.timeUsed = timeUsed;
     }
 
-    public void addSubStep(SubPassoReparacao subStep) {
-        this.substeps.add(subStep);
-        this.timePrevison += subStep.getDuration();
-        this.costPrevision += subStep.getCost();
-
-    }
-
     private List<SubPassoReparacao> getSubsteps() {
         if(this.substeps != null)
             return this.substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
@@ -94,6 +80,18 @@ public class PassoReparacao {
 
     public PassoReparacao clone() {
         return new PassoReparacao(this);
+    }
+
+    public String toString(){
+        final StringBuilder sb = new StringBuilder("\tPasso de Reparação { \n");
+        sb.append(" -> Descrição= ").append(descricao).append('\n');
+        sb.append(" -> Previsão em Horas = ").append(timePrevison).append('\n');
+        sb.append(" -> Previsão de Custo = ").append(costPrevision).append('\n');
+        sb.append(" -> Tempo usado em Horas= ").append(timeUsed).append('\n');
+        sb.append(" -> Custo Total = ").append(realCost).append('\n');
+        sb.append(" -> Lista de subPassos = ").append(substeps);
+        sb.append(" }").append("\n");
+        return sb.toString();
     }
 
 

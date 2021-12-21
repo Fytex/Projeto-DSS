@@ -1,13 +1,15 @@
-package Business.GEstabelecimento;
+package Utils;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Tuple
+ * Triplet
  * @param <X> First element
  * @param <Y> Second element
+ * @param <Z> Third element
  */
-public class Tuple<X,Y> implements Serializable {
+public class Triplet<X, Y, Z> implements Serializable {
     /**
      * First element
      */
@@ -19,22 +21,30 @@ public class Tuple<X,Y> implements Serializable {
     public Y y;
 
     /**
-     * Instantiate Tuple
+     * Third element
+     */
+    public Z z;
+
+    /**
+     * Instantiate Triplet
      * @param x First element
      * @param y Second element
+     * @param z Third element
      */
-    public Tuple(X x, Y y) {
+    public Triplet(X x, Y y, Z z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     /**
-     * Instantiate Tuple
-     * @param tuple Tuple's object
+     * Instantiate Triplet
+     * @param triplet Triplet's object
      */
-    public Tuple(Tuple<X, Y> tuple){
-        this.x = tuple.getX();
-        this.y = tuple.getY();
+    public Triplet(Triplet<X, Y, Z> triplet){
+        this.x = triplet.getX();
+        this.y = triplet.getY();
+        this.z = triplet.getZ();
     }
 
     /**
@@ -54,6 +64,14 @@ public class Tuple<X,Y> implements Serializable {
     }
 
     /**
+     * Get third element
+     * @return Third element
+     */
+    public Z getZ() {
+        return z;
+    }
+
+    /**
      * Set first element
      * @param x First element
      */
@@ -70,12 +88,20 @@ public class Tuple<X,Y> implements Serializable {
     }
 
     /**
+     * Set third element
+     * @param z Third element
+     */
+    public void setZ(Z z) {
+        this.z = z;
+    }
+
+    /**
      * Clone this object
-     * @return Tuple's object
+     * @return Triplet's object
      */
     @Override
-    public Tuple<X,Y> clone(){
-        return new Tuple<>(this);
+    public Triplet<X,Y,Z> clone(){
+        return new Triplet<>(this);
     }
 
     /**
@@ -87,19 +113,20 @@ public class Tuple<X,Y> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tuple<?, ?> tuple = (Tuple<?, ?>) o;
-        return Objects.equals(x, tuple.x) && Objects.equals(y, tuple.y);
+        Triplet<?, ?, ?> triplet = (Triplet<?, ?, ?>) o;
+        return Objects.equals(x, triplet.x) && Objects.equals(y, triplet.y) && Objects.equals(z, triplet.z);
     }
 
     /**
      * String representation of this object
-     * @return String representation of Tuple's object
+     * @return String representation of Triplet's object
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Tuple{");
+        final StringBuilder sb = new StringBuilder("Triplet{");
         sb.append("x=").append(x);
         sb.append(", y=").append(y);
+        sb.append(", z=").append(z);
         sb.append('}');
         return sb.toString();
     }

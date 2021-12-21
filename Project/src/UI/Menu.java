@@ -45,10 +45,6 @@ public class Menu {
         this(titulo, Arrays.asList(opcoes));
     }
 
-
-    /**
-     * Correr o menu uma vez.
-     */
     public void runOnce() {
         int op;
         show();
@@ -88,7 +84,7 @@ public class Menu {
         for (int i = 0; i < this.opcoes.size(); i++) {
             System.out.print(i + 1);
             System.out.print(" - ");
-            System.out.println(this.disponivel.get(i).validate() ? this.opcoes.get(i) : "---");
+            System.out.println(this.disponivel.get(i).validate() ? this.opcoes.get(i) : this.opcoes.get(i) + " (Não disponível)");
         }
         System.out.println("0 - Sair");
     }

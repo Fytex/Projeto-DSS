@@ -1,6 +1,8 @@
 package Business.GEstabelecimento;
 
-public abstract class Utilizador {
+import java.io.Serializable;
+
+public abstract class Utilizador implements Serializable {
     private String username;
     private String password;
 
@@ -11,5 +13,9 @@ public abstract class Utilizador {
 
     public boolean login(String password) {
         return this.password.equals(password);
+    }
+
+    public String getUsername(){
+        return this.username;
     }
 }

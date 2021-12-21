@@ -1,7 +1,8 @@
 package Business.GEstabelecimento;
 
+import java.io.Serializable;
 
-public class Reparacao {
+public abstract class Reparacao implements Serializable {
 
     public enum EstadoReparacao {
         PENDING,
@@ -9,49 +10,34 @@ public class Reparacao {
         PAUSE,
         FINISHED
     }
-    private Orcamento budget;
-    private PlanoTrabalho plan;
+
+    public Reparacao(Equipamento eq){
+        this.equipamento = eq;
+    }
+
     private EstadoReparacao state = EstadoReparacao.PENDING;
-
-    public Reparacao(Orcamento budget, PlanoTrabalho plan){
-        this.budget = budget;
-        this.plan = plan;
-    }
-
-    public Reparacao(Reparacao repair){
-        this.budget = repair.getBudget();
-        this.plan = repair.getPlan();
-    }
+    private Equipamento equipamento;
 
     public boolean isPending() {
         return this.state == EstadoReparacao.PENDING;
     }
-
-    public void updateState(EstadoReparacao state) {
-        this.state = state;
-    }
-
-    public Orcamento getBudget(){
-        return this.budget.clone();
-    }
-
-    public PlanoTrabalho getPlan() {
-        return this.plan.clone();
-    }
-
-    public Reparacao clone(){
-        return new Reparacao(this);
-    }
-
-    public void pause() {
-        this.state = EstadoReparacao.PAUSE;
-    }
-
     public void finish() {
         this.state = EstadoReparacao.FINISHED;
     }
 
-    public void start() {
+    public void run() {
         this.state = EstadoReparacao.EXECUTING;
     }
+
+    public String getEquipmentInfo() {
+        return this.equipamento.getInfo();
+    }
+    public Equipamento getEquipment(){
+        return this.equipamento.clone();
+    }
+    public void pause() {
+        this.state = EstadoReparacao.PAUSE;
+    }
+
+
 }

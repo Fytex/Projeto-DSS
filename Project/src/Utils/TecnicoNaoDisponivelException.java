@@ -1,4 +1,4 @@
-package Business.GEstabelecimento;
+package Utils;
 
 public class TecnicoNaoDisponivelException extends Exception{
     public TecnicoNaoDisponivelException(){

@@ -1,41 +1,34 @@
 package Business.GEstabelecimento;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Orcamento {
-    private Equipamento equipamento;
-    private EstadoOrcamento estado;
+public class Orcamento implements Serializable {
 
+    private int equipmentId;
     private float totalCostPrevision;
     private int timePrevision;
     private LocalDateTime created;
+    private LocalDateTime archivedDate;
 
-    public Orcamento(Equipamento eq) {
-        this.equipamento = eq;
-        this.estado = EstadoOrcamento.NOTDONE;
+    public Orcamento(int equipmentId) {
+
         this.totalCostPrevision = 0;
         this.timePrevision = 0;
         this.created = LocalDateTime.now();
+        this.equipmentId = equipmentId;
     }
 
     public Orcamento(Orcamento o){
-        this.equipamento = o.getEquipment();
-        this.estado = o.getEstado();
-        this.totalCostPrevision = o.getTimePrevision();
+        this.equipmentId = o.getEquipmentId();
+        this.totalCostPrevision = o.getTotalCostPrevision();
         this.timePrevision = o.getTimePrevision();
         this.created = o.getTimeCreated();
+        this.archivedDate = o.getArchivedDate();
     }
 
-    public String getEquipmentInfo() {
-        return this.equipamento.getInfo();
-    }
-
-    public Equipamento getEquipment() {
-        return this.equipamento.clone();
-    }
-
-    public EstadoOrcamento getEstado(){
-        return this.estado;
+    public int getEquipmentId(){
+        return this.equipmentId;
     }
 
     public float getTotalCostPrevision(){
@@ -54,10 +47,6 @@ public class Orcamento {
         this.timePrevision = timePrevision;
     }
 
-    public void setEstado(EstadoOrcamento estado) {
-        this.estado = estado;
-    }
-
     public LocalDateTime getTimeCreated(){
         return this.created;
     }
@@ -66,9 +55,15 @@ public class Orcamento {
         this.created = created;
     }
 
+    public LocalDateTime getArchivedDate() {return this.archivedDate;}
+
+    public void setArchivedDate(LocalDateTime date) { this.archivedDate = date; }
+
     public LocalDateTime getTimeOfExpiricy(){
         return this.created.plusDays(30);
     }
+
+    public LocalDateTime getTimeOfDisposal(){return this.archivedDate.plusDays(90);}
 
     public Orcamento clone(){
         return new Orcamento(this);

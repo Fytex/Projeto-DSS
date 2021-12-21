@@ -1,6 +1,9 @@
 package Business.GEstabelecimento;
 
-public class Cliente {
+import java.io.Serializable;
+
+
+public class Cliente implements Serializable {
     private String nome;
     private String nif;
     private String email;
@@ -12,6 +15,4 @@ public class Cliente {
         this.email = email;
         this.mobile = mobile;
     }
-
-
 }

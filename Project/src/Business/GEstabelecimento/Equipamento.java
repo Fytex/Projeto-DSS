@@ -1,6 +1,8 @@
 package Business.GEstabelecimento;
 
-public class Equipamento {
+import java.io.Serializable;
+
+public class Equipamento implements Serializable {
     private String nif;
     private String info;
     private boolean finished;
@@ -20,7 +22,7 @@ public class Equipamento {
         this.nif = e.getNif();
         this.info = e.getInfo();
         this.id = e.getId();
-        this.finished = e.getFinished();
+        this.finished = e.isFinished();
     }
 
     public String getNif() {
@@ -39,7 +41,7 @@ public class Equipamento {
         return this.id;
     }
 
-    public boolean getFinished(){
+    public boolean isFinished(){
         return this.finished;
     }
     public Equipamento clone() {

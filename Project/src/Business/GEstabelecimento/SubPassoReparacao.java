@@ -1,6 +1,8 @@
 package Business.GEstabelecimento;
 
-public class SubPassoReparacao {
+import java.io.Serializable;
+
+public class SubPassoReparacao implements Serializable {
     private int durationHours;
     private float cost;
 
@@ -24,5 +26,13 @@ public class SubPassoReparacao {
 
     public SubPassoReparacao clone() {
         return new SubPassoReparacao(this);
+    }
+
+    public String toString(){
+        final StringBuilder sb = new StringBuilder("SubPasso de Reparação{");
+        sb.append("Previsão em Horas = ").append(durationHours);
+        sb.append(", Previsão de Custo = ").append(cost);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,10 +1,39 @@
 package Business.GEstabelecimento;
 
-public class ReparacaoExpresso {
-    private final int fixed_price;
+import java.io.Serializable;
 
-    public ReparacaoExpresso(Equipamento equipment, ExpressType type) {
-        this.fixed_price = 1;
-    }
+public class ReparacaoExpresso extends Reparacao implements Serializable {
+
+    private ExpressType typeExpress;
+
+   public ReparacaoExpresso(ExpressType type, Equipamento eq){
+       super(eq);
+       this.typeExpress = type;
+   }
+
+   public ReparacaoExpresso(ReparacaoExpresso repair){
+       super(repair.getEquipment());
+       this.typeExpress = repair.getTypeExpress();
+   }
+
+   public ExpressType getTypeExpress(){
+       return this.typeExpress;
+   }
+
+   public int getPrice(){
+       return ExpressType.getPrice(this.typeExpress);
+   }
+
+   public ReparacaoExpresso clone(){
+       return new ReparacaoExpresso(this);
+   }
+
+   public String toString(){
+       final StringBuilder sb = new StringBuilder("Reparação Expresso {");
+       sb.append("Tipo = ").append(ExpressType.getInfo(typeExpress));
+       sb.append(", Custo Fixo = ").append(ExpressType.getPrice(typeExpress));
+       sb.append(" }");
+       return sb.toString();
+   }
 
 }
