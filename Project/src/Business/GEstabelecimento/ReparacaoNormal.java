@@ -1,8 +1,6 @@
 package Business.GEstabelecimento;
 
-import java.io.Serializable;
-
-public class ReparacaoNormal extends Reparacao implements Serializable {
+public class ReparacaoNormal extends Reparacao {
 
     private Orcamento budget;
     private PlanoTrabalho plan;
@@ -22,10 +20,6 @@ public class ReparacaoNormal extends Reparacao implements Serializable {
 
     public void incNSteps() {
         this.plan.setNStepsFinished(this.plan.getNStepsFinished() + 1);
-    }
-
-    public void pause() {
-        super.pause();
     }
 
     public Orcamento getBudget() {

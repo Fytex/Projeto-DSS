@@ -199,7 +199,7 @@ public class UI {
         String nif = sc.nextLine();
         System.out.println("""
                 **** Tipo de Reparação Expresso ****\s
-                A -> Substituir ecrã                   
+                A -> Substituir ecrã
                 B -> Instalar sistema operativo
                 C -> Limpeza de dispositivo""".indent(1));
         String type = sc.nextLine();
@@ -273,7 +273,7 @@ public class UI {
                     System.out.println(" ---- Descrição do passo de reparação : " + step.getDescricao() + " ---- ");
                     System.out.println("""
                             **** Reparação ****\s
-                            0 -> Executar passo                      
+                            0 -> Executar passo
                             1 -> Pausar reparação
                             2 -> Sair""".indent(1));
 
@@ -378,7 +378,7 @@ public class UI {
         System.out.println("\n O dispositivo mais urgente na lista de orçamentos apresenta o seguinte problema : " + equipProblem + "\n");
         System.out.println("""
                 **** Estado do Equipamento ****\s
-                0 -> Equipamento não pode ser reparado                      
+                0 -> Equipamento não pode ser reparado
                 1 -> Equipamento pode ser reparado""".indent(1));
 
         int reparable = Integer.parseInt(sc.nextLine());

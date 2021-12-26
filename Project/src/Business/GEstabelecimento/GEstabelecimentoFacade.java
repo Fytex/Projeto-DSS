@@ -33,16 +33,16 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         this.accounts.put("Admin", new Gestor("Admin", "Admin"));
         this.clients = new HashMap<>();
         this.equipments = new HashMap<>();
-        this.budgetsRequests = new ArrayList<>();
-        this.budgetsArchived = new ArrayList<>();
+        this.budgetsRequests = new LinkedList<>();
+        this.budgetsArchived = new LinkedList<>();
         this.pendingRepairs = new ArrayList<>();
-        this.progressRepairs = new ArrayList<>();
+        this.progressRepairs = new LinkedList<>();
         this.repairProofs = new ArrayList<>();
         this.deliveryProofs = new ArrayList<>();
         this.disposedEquipments = new ArrayList<>();
-
     }
 
+    @Override
     public boolean login(String username, String password, AccountType type) throws UtilizadorNaoExisteException, Exception {
         Utilizador user = accounts.get(username);
 
@@ -71,6 +71,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return user.login(password);
     }
 
+    @Override
     public void createAccount(String username, String password, AccountType type) throws Exception {
         Utilizador user;
         switch (type) {
@@ -81,6 +82,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         this.accounts.put(username, user);
     }
 
+    @Override
     public void createClient(String nome, String nif, String email, String mobile) {
         this.clients.put(nif, new Cliente(nome, nif, email, mobile));
     }
@@ -92,6 +94,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return equipment.clone();
     }
 
+    @Override
     public void askBudget(String nif, String info) {
         Equipamento equipment = registerEquipment(nif, info);
         ((Funcionario) this.currentUser).increaseReceptions();
@@ -99,6 +102,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         budgetsRequests.add(new Orcamento(equipment.getId()));
     }
 
+    @Override
     public void registerExpress(String nif, ExpressType type) throws TecnicoNaoDisponivelException {
 
         Tecnico tech = this.accounts.values().stream()
@@ -120,10 +124,12 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
 
     }
 
+    @Override
     public String getFirstBudgetRequest() {
         return this.equipments.get(this.budgetsRequests.get(0).getEquipmentId()).getInfo();
     }
 
+    @Override
     public void declineFirstBudgetRequest() {
         Orcamento budget = this.budgetsRequests.remove(0);
         this.equipments.get(budget.getEquipmentId()).setFinished();
@@ -131,18 +137,20 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         this.budgetsArchived.add(budget);
     }
 
+    @Override
     public void cancelRepair(int idx) {
         Equipamento equipment = this.pendingRepairs.get(idx).getEquipment();
         this.equipments.get(equipment.getId()).setFinished();
         this.pendingRepairs.remove(idx);
     }
 
-
+    @Override
     public List<Tuple<String, String>> getPendingRepairsInfo() {
         ReparacaoNormal repair = this.pendingRepairs.get(0);
         LocalDateTime now = LocalDateTime.now();
         int i = 0;
-        while (i < this.pendingRepairs.size() && now.isAfter(repair.getBudget().getTimeOfExpiricy())) {
+        final int size = this.pendingRepairs.size();
+        while (i < size && now.isAfter(repair.getBudget().getTimeOfExpiricy())) {
             this.pendingRepairs.remove(0);
             if (repair.isPending()) {
                 Orcamento budget = repair.getBudget();
@@ -160,18 +168,22 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public PassoReparacao createStep(String description, int timePrevision, float costPrevision) {
         return new PassoReparacao(timePrevision, costPrevision, description);
     }
 
+    @Override
     public PassoReparacao createStepWithSub(String description, List<SubPassoReparacao> subs) {
         return new PassoReparacao(description, subs);
     }
 
+    @Override
     public SubPassoReparacao createSubStep(int duration, float cost) {
         return new SubPassoReparacao(duration, cost);
     }
 
+    @Override
     public void createWorkPlan(List<PassoReparacao> steps) {
         Orcamento budget = this.budgetsRequests.remove(0);
         Equipamento eq = this.equipments.get(budget.getEquipmentId()).clone();
@@ -190,6 +202,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return workPlan.getPassos().get(nStep);
     }
 
+    @Override
     public void finishExpress() throws Exception {
         Tecnico tech = (Tecnico) this.currentUser;
         ReparacaoExpresso repair = tech.getCurrentExpressRepair();
@@ -200,6 +213,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
 
     }
 
+    @Override
     public PassoReparacao executeStep(int totalHours, float cost) throws Exception, OverPriceException {
         Tecnico tech = (Tecnico) this.currentUser;
 
@@ -232,11 +246,13 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         }
     }
 
+    @Override
     public void confirmRepair(int idx) {
         ReparacaoNormal repair = this.pendingRepairs.remove(idx);
         this.progressRepairs.add(repair);
     }
 
+    @Override
     public void pauseRepair() throws Exception {
         Tecnico tech = ((Tecnico) this.currentUser);
         ReparacaoNormal repair = tech.getCurrentNormalRepair();
@@ -247,6 +263,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
 
     }
 
+    @Override
     public PassoReparacao startRepair() throws Exception {
         if (((Tecnico) this.currentUser).isAvailable()) {
             ReparacaoNormal repair = this.progressRepairs.remove(0);
@@ -262,7 +279,8 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
             Orcamento budget = this.budgetsArchived.get(0);
             LocalDateTime now = LocalDateTime.now();
             int i = 0;
-            while (i < this.budgetsArchived.size() && now.isAfter(budget.getTimeOfDisposal())) {
+            final int size = this.budgetsArchived.size();
+            while (i < size && now.isAfter(budget.getTimeOfDisposal())) {
                 Equipamento equip = this.equipments.remove(budget.getEquipmentId());
                 this.disposedEquipments.add(equip);
                 this.budgetsArchived.remove(0);
@@ -273,6 +291,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         }
     }
 
+    @Override
     public List<Equipamento> checkInfo(String nif) throws EquipamentoNaoExisteException {
         disposeEquipment();
 
@@ -288,6 +307,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return list;
     }
 
+    @Override
     public float getTotalPayment(int id) throws EquipamentoNaoReparadoException {
         Equipamento equip = this.equipments.get(id);
 
@@ -298,6 +318,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         throw new EquipamentoNaoReparadoException();
     }
 
+    @Override
     public void registerDelivery(int id, float payment) {
 
         Funcionario func = (Funcionario) this.currentUser;
@@ -307,6 +328,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
 
     }
 
+    @Override
     public Map<String, Triplet<Tuple<Integer, Integer>, Float, Float>> getTechStatusList() {
 
         Map<String, Triplet<Tuple<Integer, Integer>, Float, Float>> techStats = new HashMap<>();
@@ -327,19 +349,23 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
                         } else
                             expressRepairs++;
                     }
+
+                    Tuple<Integer, Integer> tuple = new Tuple<>(normalRepairs, expressRepairs);
+                    Triplet<Tuple<Integer, Integer>, Float, Float> triplet;
+
                     if (normalRepairs != 0)
-                        techStats.put(e.getUsername(),
-                                new Triplet(new Tuple<>(normalRepairs, expressRepairs),
-                                        totalHours / normalRepairs, deviation / normalRepairs));
+                        triplet = new Triplet<>(tuple, (float) totalHours / normalRepairs, (float) deviation / normalRepairs);
                     else
-                        techStats.put(e.getUsername(),
-                                new Triplet(new Tuple<>(normalRepairs, expressRepairs), 0, 0));
+                        triplet = new Triplet<>(tuple, 0.f, 0.f);
+
+                    techStats.put(e.getUsername(), triplet);
                 }
             }
         }
         return techStats;
     }
 
+    @Override
     public Map<String, Tuple<Integer, Integer>> getFunStatusList() {
         Map<String, Tuple<Integer, Integer>> stats = new HashMap<>();
 
@@ -360,6 +386,7 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return stats;
     }
 
+    @Override
     public Map<String, List<String>> getTechRepairsInfo() {
         Map<String, List<String>> map = new HashMap<>();
         List<String> list = new ArrayList<>();
@@ -383,41 +410,52 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         return map;
     }
 
+    @Override
     public boolean techInExpressRepair() {
         return ((Tecnico) this.currentUser).inExpressRepair();
     }
 
+    @Override
     public void saveState(String path) throws IOException {
         State.saveState(path, this);
     }
 
+    @Override
     public boolean hasClient(String nif) {
         return clients.containsKey(nif);
     }
 
+    @Override
     public boolean hasEquips() {
         return this.equipments.size() != 0;
     }
 
+    @Override
     public boolean hasRepairProofs() {
         return this.repairProofs.size() != 0;
     }
 
+    @Override
     public boolean hasDeliveries() {
         return this.deliveryProofs.size() != 0;
     }
+
+    @Override
     public boolean existsBudgetRequests() {
         return this.budgetsRequests.size() > 0;
     }
 
+    @Override
     public boolean existsPendingRequests() {
         return this.pendingRepairs.size() > 0;
     }
 
+    @Override
     public boolean existsProgress() {
         return this.progressRepairs.size() > 0;
     }
 
+    @Override
     public boolean techIsAvailable() {
         return ((Tecnico) this.currentUser).isAvailable();
     }

@@ -24,9 +24,9 @@ public class Menu {
 
     public Menu(String titulo, List<String> opcoes) {
         this.titulo = titulo;
-        this.opcoes = new ArrayList(opcoes);
-        this.disponivel = new ArrayList();
-        this.handlers = new ArrayList();
+        this.opcoes = new ArrayList<>(opcoes);
+        this.disponivel = new ArrayList<>();
+        this.handlers = new ArrayList<>();
         this.opcoes.forEach(s -> {
             this.disponivel.add(() -> true);
             this.handlers.add(() -> System.out.println("\nATENÇÃO: Opção não implementada!"));
@@ -49,10 +49,11 @@ public class Menu {
         int op;
         show();
         op = readOption();
-        if (op > 0 && !this.disponivel.get(op - 1).validate()) {
-            System.out.println("Opção indisponível!");
-        } else if (op > 0) {
-            this.handlers.get(op - 1).execute();
+        if(op > 0){
+            if(!this.disponivel.get(op - 1).validate())
+                System.out.println("Opção indisponível!");
+            else
+                this.handlers.get(op - 1).execute();
         }
     }
 
@@ -61,10 +62,11 @@ public class Menu {
         do {
             show();
             op = readOption();
-            if (op > 0 && !this.disponivel.get(op - 1).validate()) {
-                System.out.println("Opção indisponível! Tente novamente.");
-            } else if (op > 0) {
-                this.handlers.get(op - 1).execute();
+            if(op > 0){
+                if(!this.disponivel.get(op - 1).validate())
+                    System.out.println("Opção indisponível! Tente novamente.");
+                else
+                    this.handlers.get(op - 1).execute();
             }
         } while (op != 0);
     }
@@ -81,7 +83,8 @@ public class Menu {
 
     private void show() {
         System.out.println("\n *** " + this.titulo + " *** ");
-        for (int i = 0; i < this.opcoes.size(); i++) {
+        final int size = this.opcoes.size();
+        for (int i = 0; i < size; i++) {
             System.out.print(i + 1);
             System.out.print(" - ");
             System.out.println(this.disponivel.get(i).validate() ? this.opcoes.get(i) : this.opcoes.get(i) + " (Não disponível)");
@@ -106,5 +109,3 @@ public class Menu {
         return op;
     }
 }
-
-

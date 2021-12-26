@@ -44,8 +44,8 @@ public class Equipamento implements Serializable {
     public boolean isFinished(){
         return this.finished;
     }
+
     public Equipamento clone() {
         return new Equipamento(this);
     }
-
 }

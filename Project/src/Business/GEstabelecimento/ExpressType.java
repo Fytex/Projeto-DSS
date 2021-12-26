@@ -1,8 +1,6 @@
 package Business.GEstabelecimento;
 
-import java.io.Serializable;
-
-public enum ExpressType implements Serializable {
+public enum ExpressType {
     A,
     B,
     C;

@@ -1,6 +1,7 @@
 package Business.GEstabelecimento;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,7 @@ public class PlanoTrabalho implements Serializable {
     private float totalCostPrevision;
     private int hoursUsed;
     private float realCost;
-    private int nStepsFinished = 0;
+    private int nStepsFinished;
     private List<PassoReparacao> steps;
 
     public PlanoTrabalho(List<PassoReparacao> steps) {
@@ -17,7 +18,8 @@ public class PlanoTrabalho implements Serializable {
         this.totalCostPrevision = steps.stream().map(PassoReparacao::getCostPrevision).reduce((float) 0, Float::sum);
         this.hoursUsed = 0;
         this.realCost = 0;
-        this.steps = steps.stream().map(PassoReparacao::clone).collect(Collectors.toList());
+        this.nStepsFinished = 0;
+        this.steps = steps.stream().map(PassoReparacao::clone).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public PlanoTrabalho(PlanoTrabalho p){
@@ -25,6 +27,7 @@ public class PlanoTrabalho implements Serializable {
         this.totalCostPrevision = p.getTotalCostPrevision();
         this.hoursUsed = p.getHoursUsed();
         this.realCost = p.getRealCost();
+        this.nStepsFinished = 0;
         this.steps = p.getPassos();
     }
 
@@ -35,7 +38,6 @@ public class PlanoTrabalho implements Serializable {
     public int getNStepsFinished() {
         return this.nStepsFinished;
     }
-
 
     public void setNStepsFinished(int value) {
         this.nStepsFinished = value;

@@ -1,11 +1,12 @@
 package Business.GEstabelecimento;
 
-import java.io.Serializable;
+public class Funcionario extends Utilizador {
 
-public class Funcionario extends Utilizador implements Serializable {
-    private int receptions = 0;
+    private int receptions;
+
     public Funcionario(String username, String password) {
         super(username, password);
+        this.receptions = 0;
     }
 
     public void increaseReceptions() {

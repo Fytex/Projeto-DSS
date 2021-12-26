@@ -1,9 +1,6 @@
 package Business.GEstabelecimento;
 
-
-import java.io.Serializable;
-
-public class Tecnico extends Utilizador implements Serializable {
+public class Tecnico extends Utilizador {
 
     private Reparacao currentRepair = null;
 

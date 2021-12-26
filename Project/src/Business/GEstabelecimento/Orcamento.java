@@ -55,15 +55,21 @@ public class Orcamento implements Serializable {
         this.created = created;
     }
 
-    public LocalDateTime getArchivedDate() {return this.archivedDate;}
+    public LocalDateTime getArchivedDate() {
+        return this.archivedDate;
+    }
 
-    public void setArchivedDate(LocalDateTime date) { this.archivedDate = date; }
+    public void setArchivedDate(LocalDateTime date) {
+        this.archivedDate = date;
+    }
 
     public LocalDateTime getTimeOfExpiricy(){
         return this.created.plusDays(30);
     }
 
-    public LocalDateTime getTimeOfDisposal(){return this.archivedDate.plusDays(90);}
+    public LocalDateTime getTimeOfDisposal(){
+        return this.archivedDate.plusDays(90);
+    }
 
     public Orcamento clone(){
         return new Orcamento(this);

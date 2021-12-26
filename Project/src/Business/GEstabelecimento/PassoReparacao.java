@@ -1,7 +1,6 @@
 package Business.GEstabelecimento;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class PassoReparacao implements Serializable {
 
     public PassoReparacao(String description, List<SubPassoReparacao> substeps){
         this.descricao = description;
-        this.timePrevison = substeps.stream().map(SubPassoReparacao::getDuration).reduce(0,Integer::sum);
+        this.timePrevison = substeps.stream().map(SubPassoReparacao::getDuration).reduce(0, Integer::sum);
         this.costPrevision = substeps.stream().map(SubPassoReparacao::getCost).reduce((float) 0 , Float::sum);
         this.substeps = substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
         this.timeUsed = 0;
@@ -62,7 +61,6 @@ public class PassoReparacao implements Serializable {
             return this.substeps.stream().map(SubPassoReparacao::clone).collect(Collectors.toList());
         else
             return null;
-
     }
 
     public String getDescricao() {

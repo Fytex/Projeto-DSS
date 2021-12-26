@@ -1,8 +1,6 @@
 package Business.GEstabelecimento;
 
-import java.io.Serializable;
-
-public class Gestor extends Utilizador implements Serializable {
+public class Gestor extends Utilizador {
     public Gestor(String username, String password) {
         super(username, password);
     }
