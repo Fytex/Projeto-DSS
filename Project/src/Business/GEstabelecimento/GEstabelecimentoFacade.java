@@ -121,7 +121,6 @@ public class GEstabelecimentoFacade implements IGEstabelecimento, Serializable {
         ((Funcionario) this.currentUser).increaseReceptions();
 
         tech.assignExpress(repair);
-
     }
 
     @Override
