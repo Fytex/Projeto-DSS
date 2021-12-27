@@ -115,6 +115,7 @@ public class UI {
         menuGestor.run();
 
     }
+
     public void createAccount(){
         System.out.println("Introduza o username da conta a criar : ");
         String user = sc.nextLine();
@@ -489,6 +490,7 @@ public class UI {
             System.out.println(sb);
         }
     }
+
     public void getFuncStats() {
         Map<String, Tuple<Integer, Integer>> map = this.model.getFunStatusList();
 
