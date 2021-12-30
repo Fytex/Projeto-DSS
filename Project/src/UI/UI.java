@@ -17,7 +17,7 @@ public class UI {
 
     public UI() {
         try {
-            this.model = IGEstabelecimento.loadState("objects/state");
+            this.model = IGEstabelecimento.loadState("src/objects/state");
             this.sc = new Scanner(System.in);
 
         }catch (IOException | ClassNotFoundException e) {
@@ -32,7 +32,7 @@ public class UI {
         System.out.println("Bem Vindo ao sistema de Gestão de Estabelecimentos!");
         this.showMenuPrincipal();
         try {
-            this.model.saveState("objects/state");
+            this.model.saveState("src/objects/state");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,12 +44,10 @@ public class UI {
                 "Fazer Login como Funcionário",
                 "Fazer Login como Técnico",
                 "Fazer Login como Gestor",
-                "Criar Conta"
         });
         menuPrincipal.setHandler(1, this::loginFuncionario);
         menuPrincipal.setHandler(2, this::loginTecnico);
         menuPrincipal.setHandler(3, this::loginGestor);
-        menuPrincipal.setHandler(4, this::createAccount);
         menuPrincipal.run();
     }
 
@@ -112,6 +110,7 @@ public class UI {
         menuGestor.setHandler(1, this::getTechStats);
         menuGestor.setHandler(2, this::getFuncStats);
         menuGestor.setHandler(3, this::getDetailedStats);
+        menuGestor.setHandler(4, this::createAccount);
         menuGestor.run();
 
     }
